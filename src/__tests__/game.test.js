@@ -39,8 +39,10 @@ describe('<Game />', () => {
 
     it('Should restart game by resetting the state', () =>{
         const wrapper = shallow(<Game />);
+
         wrapper.instance().restartGame(true);
         wrapper.update();
+
         expect(wrapper.instance().state).toHaveProperty('guesses', []);
         expect(wrapper.instance().state).toHaveProperty('feedback', 'Make your guess!');
         expect(wrapper.instance().state).toHaveProperty('auralStatus', '');
@@ -50,57 +52,60 @@ describe('<Game />', () => {
 
     it('makeGuess() should provide feedback upon invalid guess', () =>{
         const wrapper = shallow(<Game />);
+
         wrapper.instance().makeGuess('hello');
         wrapper.update();
+
         expect(wrapper.instance().state.feedback).toEqual('Please enter a valid number');
     });
 
     it('makeGuess() should provide feedback upon guess with diff of >= 50', () => {
         const wrapper = shallow(<Game />);
         let iceCold = wrapper.instance().state.correctAnswer - 50;
-        console.log(iceCold);
+
         wrapper.instance().makeGuess(iceCold);
         wrapper.update();
+
         expect(wrapper.instance().state.feedback).toEqual("You're Ice Cold...");
     });
 
     it('makeGuess() should provide feedback upon guess with diff of >= 30', () => {
         const wrapper = shallow(<Game />);
         let cold = wrapper.instance().state.correctAnswer - 30;
-        console.log(cold);
-        console.log(wrapper.instance().state.correctAnswer);
+
         wrapper.instance().makeGuess(cold);
         wrapper.update();
+
         expect(wrapper.instance().state.feedback).toEqual("You're Cold...");
     });
 
     it('makeGuess() should provide feedback upon guess with diff of >= 10', () => {
         const wrapper = shallow(<Game />);
         let warm = wrapper.instance().state.correctAnswer - 10;
-        console.log(warm);
-        console.log(wrapper.instance().state.correctAnswer);
+
         wrapper.instance().makeGuess(warm);
         wrapper.update();
+
         expect(wrapper.instance().state.feedback).toEqual("You're Warm.");
     });
 
     it('makeGuess() should provide feedback upon guess with diff of >= 1', () => {
         const wrapper = shallow(<Game />);
         let hot = wrapper.instance().state.correctAnswer - 1;
-        console.log(hot);
-        console.log(wrapper.instance().state.correctAnswer);
+
         wrapper.instance().makeGuess(hot);
         wrapper.update();
+
         expect(wrapper.instance().state.feedback).toEqual("You're Hot!");
     });
 
     it('makeGuess() should provide feedback upon correct guess', () => {
         const wrapper = shallow(<Game />);
         let correct = wrapper.instance().state.correctAnswer;
-        console.log(correct);
-        console.log(wrapper.instance().state.correctAnswer);
+
         wrapper.instance().makeGuess(correct);
         wrapper.update();
+        
         expect(wrapper.instance().state.feedback).toEqual("You got it!");
     });
 
