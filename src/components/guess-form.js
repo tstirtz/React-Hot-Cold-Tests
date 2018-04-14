@@ -4,7 +4,7 @@ import './guess-form.css';
 
 export default class GuessForm extends React.Component {
   onSubmit(event) {
-    event.preventDefault();
+    // event.preventDefault();
 
     if (this.props.onMakeGuess) {
       const value = this.input.value;
@@ -16,7 +16,7 @@ export default class GuessForm extends React.Component {
 
   render() {
     return (
-      <form onSubmit={e => this.onSubmit(e)}>
+      <form onSubmit={e => {this.onSubmit(e); e.preventDefault();}}>
         <input
           type="number"
           name="userGuess"
@@ -29,10 +29,10 @@ export default class GuessForm extends React.Component {
           ref={input => (this.input = input)}
           required
         />
-        <button 
+        <button
           type="submit"
           name="submit"
-          id="guessButton" 
+          id="guessButton"
           className="button"
         >
           Guess

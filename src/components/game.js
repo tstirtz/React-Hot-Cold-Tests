@@ -5,6 +5,19 @@ import GuessSection from './guess-section';
 import StatusSection from './status-section';
 import InfoSection from './info-section';
 
+export const generateAuralUpdate = (guesses,feedback) => {
+
+  // If there's not exactly 1 guess, we want to
+  // pluralize the nouns in this aural update.
+  const pluralize = guesses.length !== 1;
+
+  let  auralStatus = `Here's the status of the game right now: ${feedback} You've made ${guesses.length} ${pluralize ? 'guesses' : 'guess'}.`;
+
+  if (guesses.length > 0) {
+    auralStatus += ` ${pluralize ? 'In order of most- to least-recent, they are' : 'It was'}: ${guesses.reverse().join(', ')}`;
+  }
+  return auralStatus
+}
 export default class Game extends React.Component {
   constructor(props) {
     super(props);
@@ -58,41 +71,28 @@ export default class Game extends React.Component {
     // instant information about the app.
     document.title = feedback ? `${feedback} | Hot or Cold` : 'Hot or Cold';
   }
-
-  generateAuralUpdate() {
-    const { guesses, feedback } = this.state;
-
-    // If there's not exactly 1 guess, we want to
-    // pluralize the nouns in this aural update.
-    const pluralize = guesses.length !== 1;
-
-    let  auralStatus = `Here's the status of the game right now: ${feedback} You've made ${guesses.length} ${pluralize ? 'guesses' : 'guess'}.`;
-
-    if (guesses.length > 0) {
-      auralStatus += ` ${pluralize ? 'In order of most- to least-recent, they are' : 'It was'}: ${guesses.reverse().join(', ')}`;
-    }
-
-
-    this.setState({ auralStatus });
+  get guessCount(){
+      return this.state.guesses.length;
   }
 
   render() {
     const { feedback, guesses, auralStatus } = this.state;
-    const guessCount = guesses.length;
+    //const guessCount = guesses.length;
 
     return (
       <div>
         <Header
           onRestartGame={() => this.restartGame()}
-          onGenerateAuralUpdate={() => this.generateAuralUpdate()}
+          onGenerateAuralUpdate={() => { this.setState({auralStatus: generateAuralUpdate(this.state.guesses, this.state.feedback)})
+      }}
         />
         <main role="main">
           <GuessSection
             feedback={feedback}
-            guessCount={guessCount}
+            guessCount={this.guessCount}
             onMakeGuess={guess => this.makeGuess(guess)}
           />
-          <StatusSection guesses={guesses} 
+          <StatusSection guesses={guesses}
             auralStatus={auralStatus}
           />
           <InfoSection />

@@ -15,3 +15,7 @@ export default function GuessList(props) {
     </ul>
   );
 }
+
+GuessList.defaultProps = {
+    guesses: []
+}
